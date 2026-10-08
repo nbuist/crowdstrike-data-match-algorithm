@@ -1,26 +1,52 @@
 # crowdstrike-data-match-algorithm
-created for internship project in collaboration with claude
+
+Created for internship project in collaboration with Claude.
 
 CrowdStrike / Inventory hostname matcher.
 
-Expected layout (row 1 = headers):
-    Column A: Hostname (from CrowdStrike)
-    Column B: Last Name (inventory)
-    Column C: Name      (inventory)
-    Column D: ID#       (inventory, 5-character HSI)
+## Expected Layout
 
-A hostname matches when its last 5 characters equal an ID# in column D
-(case-insensitive, surrounding spaces ignored).
+Row 1 contains the headers.
 
-Usage:
-    python match_hostnames.py data.xlsx                 # adds/replaces a "Matched" tab in data.xlsx
-    python match_hostnames.py data.xlsx -o result.xlsx  # writes to a new file instead
-    python match_hostnames.py data.xlsx --sheet Sheet1  # pick the source tab (default: first tab)
-    python match_hostnames.py data.csv                  # writes data_matched.csv
+| Column | Header   | Source                         |
+|--------|----------|--------------------------------|
+| A      | Hostname | CrowdStrike                    |
+| B      | Last Name| Inventory                      |
+| C      | Name     | Inventory                      |
+| D      | ID#      | Inventory (5-character HSI)    |
 
-CSV output has a Status column on every row:
-    Matched                      - hostname whose last 5 chars match an ID#
-    Unmatched - hostname only    - hostname with no matching ID#
-    Unmatched - inventory only   - inventory item no hostname matched
+A hostname matches when its last 5 characters equal an ID# in column D (case-insensitive, surrounding spaces ignored).
 
-Requires: openpyxl  (pip install openpyxl)
+## Usage
+
+```bash
+# Adds/replaces a "Matched" tab in data.xlsx
+python match_hostnames.py data.xlsx
+
+# Writes to a new file instead
+python match_hostnames.py data.xlsx -o result.xlsx
+
+# Pick the source tab (default: first tab)
+python match_hostnames.py data.xlsx --sheet Sheet1
+
+# Writes data_matched.csv
+python match_hostnames.py data.csv
+```
+
+## CSV Output
+
+Every row has a `Status` column:
+
+| Status                     | Meaning                                              |
+|----------------------------|------------------------------------------------------|
+| `Matched`                  | Hostname whose last 5 chars match an ID#             |
+| `Unmatched - hostname only`| Hostname with no matching ID#                        |
+| `Unmatched - inventory only`| Inventory item no hostname matched                  |
+
+## Requirements
+
+- [openpyxl](https://pypi.org/project/openpyxl/)
+
+```bash
+pip install openpyxl
+```
